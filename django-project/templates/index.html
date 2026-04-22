@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+
+{% block extra_style %}
+    .hero {
+        min-height: 70vh; /* Используем min-height вместо фиксированной высоты */
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        /* Твое фоновое изображение из задания */
+        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+                    url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070') no-repeat center center/cover;
+        padding: 40px 20px;
+    }
+
+    .hero h1 {
+        font-size: 3.5rem;
+        margin-bottom: 20px;
+        font-weight: 300;
+        color: white;
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 40px; /* Увеличиваем отступ снизу у текста */
+        max-width: 600px;
+    }
+
+    /* Исправленный контейнер кнопок */
+    .hero-btns {
+        display: flex;
+        flex-wrap: wrap;       /* Чтобы кнопки переносились на мобильных */
+        justify-content: center;
+        gap: 20px;            /* Расстояние между кнопками */
+        width: 100%;
+    }
+
+    .btn-main {
+        padding: 15px 30px;
+        background: var(--gold);
+        color: var(--dark);
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: 0.4s;
+        border: 1px solid var(--gold);
+        display: inline-block; /* Гарантирует правильные отступы внутри кнопки */
+    }
+
+    .btn-main:hover {
+        background: transparent;
+        color: var(--gold);
+    }
+
+    /* Стили для карточек преимуществ */
+    .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        padding: 60px 10%;
+    }
+
+    .feature-card {
+        background: var(--glass);
+        padding: 30px;
+        text-align: center;
+        transition: 0.3s;
+    }
+{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <h1 class="fade-in">Искусство вкуса и уюта</h1>
+        <p class="fade-in">Забронируйте идеальный столик для вашего завтрака или обеда.</p>
+        <div class="hero-btns fade-in">
+            <a href="#" class="btn-main fade-in">Войти</a>
+            <a href="#" class="btn-main fade-in">Зарегестрироваться</a>
+            <a href="{% url 'tabels-list' %}" class="btn-main fade-in">Посмотреть столики</a>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="feature-card fade-in">
+            <h3>Атмосфера</h3>
+            <p>Уникальный дизайн каждого уголка, вдохновленный светом.</p>
+        </div>
+        <div class="feature-card fade-in">
+            <h3>Комфорт</h3>
+            <p>Простая система бронирования в несколько кликов.</p>
+        </div>
+        <div class="feature-card fade-in">
+            <h3>Время</h3>
+            <p>Мы открыты с 8:00 до 18:00 для вашего идеального начала дня.</p>
+        </div>
+    </section>
+{% endblock %}

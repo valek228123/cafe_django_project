@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe</title>
+    <style>
+        :root {
+            --dark: #1a1a1a;
+            --gold: #c5a059;
+            --light: #f4f4f4;
+            --glass: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 10%;
+            background: rgba(26, 26, 26, 0.95);
+            border-bottom: 1px solid var(--glass);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-left: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--light);
+            font-size: 14px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        footer {
+            margin-top: auto;
+            background: #111;
+            padding: 50px 10% 20px;
+            border-top: 1px solid var(--glass);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 { margin-bottom: 20px; color: var(--gold); }
+
+        .footer-bottom {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            padding-top: 20px;
+            border-top: 1px solid var(--glass);
+        }
+
+        /* Общие стили для анимаций */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: 1s all ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        {% block extra_style %}{% endblock %}
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">Aura Dining</div>
+        <ul class="nav-links">
+            <li><a href="{% url 'index' %}">Главная</a></li>
+            <li><a href="{% url 'tabels-list' %}">Столики</a></li>
+            <li><a href="/reservations/my/">Мои брони</a></li>
+            <li><a href="/admin/">Админ</a></li>
+        </ul>
+    </nav>
+
+    <main>
+       {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Aura Dining</h4>
+                <p>Ваш любимый уголок спокойствия <br> в центре города.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Контакты</h4>
+                <p>Ул. Эстетики, 15</p>
+                <p>+7 (999) 000-00-00</p>
+            </div>
+            <div class="footer-section">
+                <h4>Режим работы</h4>
+                <p>Ежедневно: 08:00 — 18:00</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2026 Aura Dining System.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const faders = document.querySelectorAll('.fade-in');
+            const appearOptions = { threshold: 0.15 };
+            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                });
+            }, appearOptions);
+            faders.forEach(fader => appearOnScroll.observe(fader));
+        });
+    </script>
+</body>
+</html>

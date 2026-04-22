@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+
+{% block extra_style %}
+    /* НОВЫЙ БЛОК: Сетка для карточек */
+    .tables-grid {
+        display: grid;
+        /* Создаем 4 колонки одинаковой ширины */
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px; /* Расстояние между карточками */
+        padding: 40px 10%; /* Отступы по бокам как в навбаре */
+    }
+
+    /* Адаптивность: на планшетах 2 колонки, на телефонах 1 */
+    @media (max-width: 1200px) {
+        .tables-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+        .tables-grid { grid-template-columns: 1fr; }
+    }
+
+    .table-card {
+        background: var(--glass);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 8px;
+        overflow: hidden;
+        /* Убираем max-width и margin:auto, чтобы сетка сама управляла размером */
+        width: 100%;
+        transition: transform 0.3s ease, border-color 0.3s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    /* ... весь остальной твой CSS без изменений ... */
+
+    .table-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--gold);
+    }
+
+    .table-image-wrapper {
+        position: relative;
+        height: 200px; /* Чуть уменьшил высоту для 4 колонок */
+        overflow: hidden;
+    }
+
+    .table-image-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .status-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: bold;
+        background: rgba(40, 167, 69, 0.9);
+        color: white;
+    }
+
+    .table-content {
+        padding: 20px;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1; /* Чтобы кнопки всегда были внизу, если текст разный */
+    }
+
+    .table-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .table-title {
+        font-size: 1.2rem;
+        color: var(--gold);
+        font-weight: 300;
+    }
+
+    .seats-info {
+        font-size: 0.8rem;
+        color: #aaa;
+    }
+
+    .table-description {
+        font-size: 0.9rem;
+        color: #ccc;
+        margin-bottom: 20px;
+        line-height: 1.4;
+        flex-grow: 1;
+    }
+
+    .btn-reserve {
+        display: block;
+        width: 100%;
+        padding: 10px;
+        background: var(--gold);
+        color: var(--dark);
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        transition: 0.3s;
+    }
+
+    .btn-reserve:hover {
+        background: #b38f4d;
+    }
+
+    .login-link {
+        display: block;
+        text-align: center;
+        color: var(--gold);
+        text-decoration: underline;
+        font-size: 0.8rem;
+    }
+{% endblock %}
+
+{% block content %}
+<div class="tables-grid"> {% for tabel in tabels %}
+    <div class="table-card fade-in">
+        <div class="table-image-wrapper">
+            <img src="{{ tabel.image.url }}" alt="Столик {{ tabel.number }}">
+            <div class="status-badge">Свободен</div>
+        </div>
+
+        <div class="table-content">
+            <div class="table-header">
+                <h3 class="table-title">Столик № {{ tabel.number }}</h3>
+                <span class="seats-info">Мест: {{ tabel.seats }}</span>
+            </div>
+
+            <p class="table-description">
+                {{ tabel.description }}
+            </p>
+
+            {% if user.is_authenticated %}
+                <a href="{% url 'book-table' %}" class="btn-reserve">Забронировать</a>
+            {% else %}
+                <a href="#" class="login-link">Войдите, чтобы забронировать</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div> {% endblock %}
