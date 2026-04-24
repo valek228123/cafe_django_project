@@ -10,3 +10,4 @@ wheels/
 .venv
 .idea
 django-project/db.sqlite3
+django-project/media

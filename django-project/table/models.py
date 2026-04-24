@@ -7,6 +7,9 @@ class Tabel(models.Model):
     description = models.TextField()
     is_free = models.BooleanField(default=True)
 
+    class Meta:
+        db_table = 'tabel_tabel'
+
 
 # Create your models here.
 

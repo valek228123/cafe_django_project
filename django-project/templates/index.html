@@ -74,8 +74,9 @@
         <h1 class="fade-in">Искусство вкуса и уюта</h1>
         <p class="fade-in">Забронируйте идеальный столик для вашего завтрака или обеда.</p>
         <div class="hero-btns fade-in">
-            <a href="#" class="btn-main fade-in">Войти</a>
-            <a href="#" class="btn-main fade-in">Зарегестрироваться</a>
+            {% if user.is_authenticated %}
+                <a href="#" class="btn-main fade-in">Мои брони</a>
+            {% endif %}
             <a href="{% url 'tabels-list' %}" class="btn-main fade-in">Посмотреть столики</a>
         </div>
     </section>
@@ -95,3 +96,4 @@
         </div>
     </section>
 {% endblock %}
+

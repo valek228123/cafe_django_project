@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<style>
+    .form-wrapper {
+        max-width: 700px;
+        margin: 60px auto;
+        background: #A5A5A5;
+        padding: 35px 40px;
+        border-radius: 20px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .form-title {
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 25px;
+        color: #1f2937;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .form-label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #374151;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid #d1d5db;
+        font-size: 15px;
+        transition: 0.2s ease;
+    }
+
+    .form-control:focus {
+        border-color: #2563eb;
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    textarea.form-control {
+        resize: vertical;
+    }
+
+    .buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .btn {
+        padding: 12px 20px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 700;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .btn-primary {
+        background: #c5a059;
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: #e5e7eb;
+    }
+
+    .btn-secondary {
+        background: #e5e7eb;
+        color: #374151;
+    }
+
+    .btn-secondary:hover {
+        background: #d1d5db;
+    }
+
+    /* сообщения */
+    .success {
+        color: green;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+
+    .error {
+        color: red;
+        font-weight: 600;
+        margin-top: 10px;
+    }
+    .message-success {
+        margin: 10px 0;
+        font-weight: bold;
+        color: red;
+    }
+</style>
+
+<div class="form-wrapper">
+
+    <div class="form-title">Регистрация</div>
+
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username_1" class="form-label">Имя пользователя</label>
+            <input type="text" required name="username" class="form-control" id="username_1" value = "{{ form.username.value|default:'' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="password_1" class="form-label">Пароль</label>
+            <input type="password" required name="password" class="form-control" id="password_1" value = "{{ form.password.value|default:'' }}">
+        </div>
+
+
+{#        {% if form.errors %}#}
+{#            {% include 'auth/error_login.html' %}#}
+{#        {% endif %}#}
+{#    {% if form.errors %}#}
+{#     {% for  error in form.errors %}#}
+{#        <div class="message-success">#}
+{#            {{ error }}#}
+{#        </div>#}
+{#        {% endfor %}#}
+{#    {% endif %}#}
+
+    {% if form.non_field_errors %}
+        {% for  error in form.non_field_errors %}
+        <div class="message-success">
+            {{ error }}
+        </div>
+        {% endfor %}
+    {% endif %}
+
+        <div class="buttons">
+            <input type="submit" class="btn btn-primary" value="Войти">
+        </div>
+
+    </form>
+
+</div>
+
+{% endblock %}
+

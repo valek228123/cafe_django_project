@@ -14,21 +14,26 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from debug_toolbar.toolbar import debug_toolbar_urls
+# from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from tabel import views as tabel_views
+from table import views as tabel_views
 from reservation import views as reservation_views
+from authentication import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', tabel_views.index_view,name = 'index'),
-    path('tabels/', tabel_views.tabels_view, name = 'tabels-list'),
-    path('tabels/book_a_table',reservation_views.book_table_view, name = 'book-table'),
-] + debug_toolbar_urls()
-
+    path('tables/', tabel_views.table_view, name = 'tabels-list'),
+    path('tables/book_a_table/<int:table_id>',reservation_views.book_table_view, name = 'book-table'),
+    path('auth/register', auth_views.register_view, name='register'),
+    path('auth/login', auth_views.LoginView.as_view(), name = 'login'),
+    path('auth/logout/', LogoutView.as_view(), name = 'logout'),
+]
+# + debug_toolbar_urls()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 

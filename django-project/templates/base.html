@@ -65,7 +65,10 @@
             transition: 0.3s;
         }
 
-        .nav-links a:hover { color: var(--gold); }
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
 
         footer {
             margin-top: auto;
@@ -81,7 +84,10 @@
             margin-bottom: 40px;
         }
 
-        .footer-section h4 { margin-bottom: 20px; color: var(--gold); }
+        .footer-section h4 {
+            margin-bottom: 20px;
+            color: var(--gold);
+        }
 
         .footer-bottom {
             text-align: center;
@@ -92,62 +98,89 @@
         }
 
         /* Общие стили для анимаций */
-        .fade-in { opacity: 0; transform: translateY(20px); transition: 1s all ease-out; }
-        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: 1s all ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         {% block extra_style %}{% endblock %}
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">Aura Dining</div>
-        <ul class="nav-links">
-            <li><a href="{% url 'index' %}">Главная</a></li>
-            <li><a href="{% url 'tabels-list' %}">Столики</a></li>
-            <li><a href="/reservations/my/">Мои брони</a></li>
-            <li><a href="/admin/">Админ</a></li>
-        </ul>
-    </nav>
+<nav>
+    <div class="logo">Aura Dining</div>
+    <ul class="nav-links">
+        <li><a href="{% url 'index' %}">Главная</a></li>
+        <li><a href="{% url 'tabels-list' %}">Столики</a></li>
+        {% if user.is_authenticated %}
+            <li><a href="#">Мои брони</a></li>
+            <li>
+            <a>
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" style="background:none; border:none; color:inherit; cursor:pointer; font:inherit; padding:0;">
+                ВЫЙТИ
+            </button>
 
-    <main>
-       {% block content %}{% endblock %}
-    </main>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Aura Dining</h4>
-                <p>Ваш любимый уголок спокойствия <br> в центре города.</p>
-            </div>
-            <div class="footer-section">
-                <h4>Контакты</h4>
-                <p>Ул. Эстетики, 15</p>
-                <p>+7 (999) 000-00-00</p>
-            </div>
-            <div class="footer-section">
-                <h4>Режим работы</h4>
-                <p>Ежедневно: 08:00 — 18:00</p>
-            </div>
+        </form>
+                </a>
+                </li>
+        {% else %}
+            <li><a href="{% url 'login' %}">Войти</a></li>
+            <li><a href="{% url 'register' %}" >Зарегестрироваться</a></li>
+        {% endif %}
+
+        <li><a href="/admin/">Админ</a></li>
+        <li><p>{{ user.username }} </p></li>
+    </ul>
+</nav>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <div class="footer-content">
+        <div class="footer-section">
+            <h4>Aura Dining</h4>
+            <p>Ваш любимый уголок спокойствия <br> в центре города.</p>
         </div>
-        <div class="footer-bottom">
-            &copy; 2026 Aura Dining System.
+        <div class="footer-section">
+            <h4>Контакты</h4>
+            <p>Ул. Эстетики, 15</p>
+            <p>+7 (999) 000-00-00</p>
         </div>
-    </footer>
+        <div class="footer-section">
+            <h4>Режим работы</h4>
+            <p>Ежедневно: 08:00 — 18:00</p>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        &copy; 2026 Aura Dining System.
+    </div>
+</footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const faders = document.querySelectorAll('.fade-in');
-            const appearOptions = { threshold: 0.15 };
-            const appearOnScroll = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(entry => {
-                    if (!entry.isIntersecting) return;
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                });
-            }, appearOptions);
-            faders.forEach(fader => appearOnScroll.observe(fader));
-        });
-    </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const faders = document.querySelectorAll('.fade-in');
+        const appearOptions = {threshold: 0.15};
+        const appearOnScroll = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            });
+        }, appearOptions);
+        faders.forEach(fader => appearOnScroll.observe(fader));
+    });
+</script>
 </body>
 </html>

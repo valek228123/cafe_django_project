@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('tabel', '0001_initial'),
+        ('table', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('hour_start', models.IntegerField()),
                 ('hour_end', models.IntegerField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('tabel', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='tabel.tabel')),
+                ('table', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='table.table')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),

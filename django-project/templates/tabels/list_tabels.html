@@ -49,7 +49,7 @@
         object-fit: cover;
     }
 
-    .status-badge {
+    .status-badge-good {
         position: absolute;
         top: 10px;
         right: 10px;
@@ -59,6 +59,18 @@
         text-transform: uppercase;
         font-weight: bold;
         background: rgba(40, 167, 69, 0.9);
+        color: white;
+    }
+    .status-badge-bad {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 10px;
+        text-transform: uppercase;
+        font-weight: bold;
+        background: red;
         color: white;
     }
 
@@ -123,27 +135,31 @@
 {% endblock %}
 
 {% block content %}
-<div class="tables-grid"> {% for tabel in tabels %}
+<div class="tables-grid"> {% for table in tables %}
     <div class="table-card fade-in">
         <div class="table-image-wrapper">
-            <img src="{{ tabel.image.url }}" alt="Столик {{ tabel.number }}">
-            <div class="status-badge">Свободен</div>
+            <img src="{{ table.image.url }}" alt="Столик {{ table.number }}">
+            {% if table.is_free %}
+            <div class="status-badge-good">Свободен</div>
+                {% else %}
+                <div class="status-badge-bad">Сейчас занят</div>
+            {% endif %}
         </div>
 
         <div class="table-content">
             <div class="table-header">
-                <h3 class="table-title">Столик № {{ tabel.number }}</h3>
-                <span class="seats-info">Мест: {{ tabel.seats }}</span>
+                <h3 class="table-title">Столик № {{ table.number }}</h3>
+                <span class="seats-info">Мест: {{ table.seats }}</span>
             </div>
 
             <p class="table-description">
-                {{ tabel.description }}
+                {{ table.description }}
             </p>
 
             {% if user.is_authenticated %}
-                <a href="{% url 'book-table' %}" class="btn-reserve">Забронировать</a>
+                <a href="{% url 'book-table' table.id %}" class="btn-reserve">Забронировать</a>
             {% else %}
-                <a href="#" class="login-link">Войдите, чтобы забронировать</a>
+                <a href="{% url 'login' %}" class="login-link">Войдите , чтобы забронировать</a>
             {% endif %}
         </div>
     </div>

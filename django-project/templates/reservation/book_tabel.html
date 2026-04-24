@@ -1,92 +1,130 @@
 {% extends 'base.html' %}
 
 {% block extra_style %}
+    /* Основной контейнер */
     .booking-container {
-        max-width: 500px;
-        margin: 60px auto;
-        padding: 40px;
-        background: var(--glass);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        border-radius: 12px;
-        backdrop-filter: blur(10px);
+    max-width: 500px;
+    margin: 60px auto;
+    padding: 40px;
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
     }
 
     .booking-container h2 {
-        color: var(--gold);
-        text-align: center;
-        margin-bottom: 30px;
-        font-weight: 300;
-        text-transform: uppercase;
-        letter-spacing: 2px;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 30px;
+    font-weight: 300;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     }
 
-    /* Стилизация полей ввода Django */
+    /* Поля формы */
     .booking-form p {
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: column;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
     }
 
     .booking-form label {
-        color: var(--gold);
-        margin-bottom: 8px;
-        font-size: 0.9rem;
-        text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    text-transform: uppercase;
     }
 
     .booking-form input, .booking-form select {
-        padding: 12px;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 4px;
-        color: white;
-        font-size: 1rem;
-        transition: 0.3s;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    color: white;
+    font-size: 1rem;
+    transition: 0.3s;
     }
 
-    .booking-form input:focus {
-        outline: none;
-        border-color: var(--gold);
-        background: rgba(255, 255, 255, 0.1);
+    /* Кнопки в один ряд */
+    .form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
     }
 
+    /* КНОПКА ЗАБРОНИРОВАТЬ - ТЕПЕРЬ БУДЕТ ЦВЕТА GOLD */
     .btn-submit {
-        width: 100%;
-        padding: 15px;
-        background: var(--gold);
-        color: var(--dark);
-        border: none;
-        border-radius: 4px;
-        font-weight: bold;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: 0.4s;
-        margin-top: 10px;
+    flex: 1;
+    padding: 15px;
+    background-color: var(--gold) !important; /* Принудительно ставим твой GOLD */
+    color: #000; /* Черный текст, чтобы на золотом было видно */
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s ease;
     }
 
     .btn-submit:hover {
-        background: #b38f4d;
-        transform: translateY(-2px);
+    background-color: #e5e7eb !important; /* Серебристый при наведении */
+    }
+
+    /* КНОПКА НАЗАД - КАК В САМОМ ПЕРВОМ ВАРИАНТЕ */
+    .btn-back {
+    flex: 1;
+    padding: 15px;
+    background: #e5e7eb;
+    color: #374151;
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    }
+
+    .btn-back:hover {
+    background: #d1d5db;
+    }
+
+    /* Ошибки и прочее */
+    .booking-form .errorlist {
+    display: none;
+    }
+
+    .errors {
+    color: #ff6b6b;
+    margin-top: 20px;
+    text-align: center;
     }
 {% endblock %}
 
 {% block content %}
-<div class="booking-container fade-in">
-    <h2>Бронирование</h2>
-    <form action="{% url 'book-table' %}" method="post" class="booking-form">
-        {% csrf_token %}
+    <div class="booking-container fade-in">
+        <h2>Бронирование</h2>
+        <form action="{% url 'book-table' table_id %}" method="post" class="booking-form">
+            {% csrf_token %}
 
-        {% if form.non_field_errors %}
-        <div class="errors" style="color: #ff6b6b; margin-bottom: 20px; text-align: center;">
-            {% for error in form.non_field_errors %}
-                <p>{{ error }}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
+            {% if form.non_field_errors %}
 
-        {{ form.as_p }}
+            {% endif %}
 
-        <input type="submit" class="btn-submit" value="Забронировать стол">
-    </form>
-</div>
+            {{ form.as_p }}
+            <div class="errors" style="color: #ff6b6b; margin-bottom: 20px; text-align: center;">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            <div class="form-actions">
+                <input type="submit" class="btn-submit" value="Забронировать стол">
+                <a href="{% url 'tabels-list' %}" class="btn-back">Назад</a>
+            </div>
+        </form>
+    </div>
 {% endblock %}
