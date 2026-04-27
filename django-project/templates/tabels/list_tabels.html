@@ -135,15 +135,21 @@
 {% endblock %}
 
 {% block content %}
-<div class="tables-grid"> {% for table in tables %}
+<div class="tables-grid">
+    {% for table,is_free in tables %}
     <div class="table-card fade-in">
         <div class="table-image-wrapper">
             <img src="{{ table.image.url }}" alt="Столик {{ table.number }}">
-            {% if table.is_free %}
+            {% now "H" as curr_hour %}
+            {% if curr_hour|add:'0' >= 18 or curr_hour|add:'0' < 8 %}
+                <div class="status-badge-bad">Сейчас ресторан не работает</div>
+                {% else %}
+            {% if is_free %}
             <div class="status-badge-good">Свободен</div>
                 {% else %}
                 <div class="status-badge-bad">Сейчас занят</div>
             {% endif %}
+        {% endif %}
         </div>
 
         <div class="table-content">

@@ -26,9 +26,7 @@ class ReservationForm(forms.ModelForm):
         hour_start = cleaned_data.get('hour_start')
         hour_end = cleaned_data.get('hour_end')
         date = cleaned_data.get('date')
-        print(date, type(date))
         date_now = datetime.now()
-        print(date_now.date(), type(date_now.date()), date_now.hour)
         all_reservations = Reservation.objects.filter(date = date)
         if hour_start and hour_end:
             if hour_start >= hour_end:

@@ -1,0 +1,253 @@
+{% extends 'base.html' %}
+{% block extra_style %}
+    /* Основной контейнер страницы */
+    .reservations-page {
+        max-width: 1100px;
+        margin: 40px auto;
+        padding: 0 20px;
+        font-family: 'Inter', sans-serif; /* Или твой основной шрифт */
+    }
+
+    .page-header {
+        text-align: center;
+        margin-bottom: 50px;
+    }
+
+    .page-header h2 {
+        color: var(--gold);
+        text-transform: uppercase;
+        letter-spacing: 4px;
+        font-weight: 300;
+        font-size: 2rem;
+        margin: 0;
+    }
+
+    /* Сетка для карточек */
+    .reservations-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    /* Карточка бронирования */
+    .reservation-card {
+        background: var(--glass);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 25px;
+        backdrop-filter: blur(15px);
+        transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .reservation-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--gold);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Шапка карточки */
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .table-info {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .table-label {
+        color: var(--gold);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .table-name {
+        color: #fff;
+        font-size: 1.25rem;
+        font-weight: 600;
+    }
+
+    .status-badge {
+        background: rgba(74, 222, 128, 0.1);
+        color: #4ade80;
+        padding: 5px 12px;
+        border-radius: 6px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        border: 1px solid rgba(74, 222, 128, 0.2);
+    }
+
+    /* Детали брони */
+    .card-details {
+        margin-bottom: 25px;
+    }
+
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .detail-label {
+        color: rgba(255, 255, 255, 0.4);
+        font-size: 0.9rem;
+    }
+
+    .detail-value {
+        color: #f1f1f1;
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    /* Кнопки действий */
+    .card-actions {
+        display: flex;
+        gap: 12px;
+    }
+
+    .btn-edit, .btn-cancel {
+        flex: 1;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-decoration: none;
+        text-align: center;
+        transition: 0.3s;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-edit {
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-edit:hover {
+        background: #e5e7eb;
+        color: #000;
+        border-color: #e5e7eb;
+    }
+
+    .btn-cancel {
+        background: transparent;
+        color: #ff6b6b;
+        border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-cancel:hover {
+        background: #ff6b6b;
+        color: #fff;
+        border-color: #ff6b6b;
+    }
+
+    /* Футер страницы */
+    .page-footer {
+        text-align: center;
+        margin-top: 60px;
+    }
+
+    .btn-new-booking {
+        display: inline-block;
+        padding: 16px 35px;
+        background: var(--gold);
+        color: #000;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+    }
+
+    .btn-new-booking:hover {
+        background: #e5e7eb;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+    }
+
+    /* Анимация появления */
+    .fade-in-up {
+        animation: fadeInUp 0.7s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+{% endblock %}
+{% block content %}
+
+<div class="reservations-page fade-in-up">
+    {% if not reservations %}
+        <div class="page-header">
+        <h2>Бронирований пока нету</h2>
+    </div>
+         <div class="page-footer">
+        <a href="{% url 'tabels-list' %}" class="btn-new-booking">Забронировать первый столик</a>
+    </div>
+{% else %}
+        <div class="page-header">
+        <h2>Мои Бронирования</h2>
+    </div>
+    <div class="reservations-grid">
+
+        {% for reservation in reservations %}
+        <div class="reservation-card">
+            <div class="card-header">
+                <div class="table-info">
+                    <span class="table-label">Ваш столик</span>
+                    <span class="table-name">{{ reservation.tabel.number }}</span>
+                </div>
+                {% now "Y-m-d" as current_day %}
+                {% if current_day <= reservation.date|date:"Y-m-d" %}
+                <div  class="status-badge">Активно</div>
+                    {% else %}
+                    <div style="background: red; color: white" class="status-badge">Не активно</div>
+                {% endif %}
+            </div>
+
+            <div class="card-details">
+                <div class="detail-row">
+                    <span class="detail-label">Дата</span>
+                    <span class="detail-value">{{ reservation.date| date:'d.m.Y' }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Время</span>
+                    <span class="detail-value">{{ reservation.hour_start }}:00 - {{ reservation.hour_end }}:00</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Места</span>
+                    <span class="detail-value">{{ reservation.tabel.seats }}</span>
+                </div>
+            </div>
+
+            <div class="card-actions">
+                <form action={% url 'delete-booked-table' reservation.id %} method="post" style="flex: 1; display: flex;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-cancel" style="width: 100%;">Отменить</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+        </div>
+
+
+    <div class="page-footer">
+        <a href="{% url 'tabels-list' %}" class="btn-new-booking">Забронировать ещё</a>
+    </div>
+{% endif %}
+</div>
+{% endblock %}

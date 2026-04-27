@@ -120,7 +120,7 @@
         <li><a href="{% url 'index' %}">Главная</a></li>
         <li><a href="{% url 'tabels-list' %}">Столики</a></li>
         {% if user.is_authenticated %}
-            <li><a href="#">Мои брони</a></li>
+            <li><a href="{% url 'list-booked-tables' %}">Мои брони</a></li>
             <li>
             <a>
             <form action="{% url 'logout' %}" method="post" style="display:inline;">
