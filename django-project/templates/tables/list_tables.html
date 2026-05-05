@@ -163,9 +163,9 @@
             </p>
 
             {% if user.is_authenticated %}
-                <a href="{% url 'book-table' table.id %}" class="btn-reserve">Забронировать</a>
+                <a href="{% url 'reservation:book-table' table.id %}" class="btn-reserve">Забронировать</a>
             {% else %}
-                <a href="{% url 'login' %}" class="login-link">Войдите , чтобы забронировать</a>
+                <a href="{% url 'authentication:login' %}" class="login-link">Войдите , чтобы забронировать</a>
             {% endif %}
         </div>
     </div>

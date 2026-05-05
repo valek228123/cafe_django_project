@@ -21,6 +21,6 @@ def register_view(request):
                 username=form.cleaned_data['username'],
                 password = form.cleaned_data['password']
             )
-            return redirect(resolve_url('login'))
+            return redirect(resolve_url('authentication:login'))
     return render(request,"auth/register.html", context = {"form":form})
 

@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% block extra_style %}
+    /* Твои существующие стили */
+    .reservations-page {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: 'Inter', sans-serif;
+    }
+
+    /* --- СЕКЦИЯ ПОИСКА --- */
+    .search-container {
+    max-width: 600px;
+    margin: 0 auto 40px auto;
+    position: relative;
+    }
+
+    .search-form {
+    display: flex;
+    gap: 10px;
+    background: var(--glass);
+    padding: 8px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    transition: border-color 0.3s ease;
+    }
+
+    .search-form:focus-within {
+    border-color: var(--gold);
+    }
+
+    .search-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px 15px;
+    color: #fff;
+    font-size: 1rem;
+    outline: none;
+    }
+
+    .search-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+    }
+
+    .search-button {
+    background: var(--gold);
+    color: #000;
+    border: none;
+    padding: 0 25px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 0.8rem;
+    }
+
+    .search-button:hover {
+    background: #e5e7eb;
+    transform: scale(1.02);
+    }
+    /* ------------------------ */
+
+    .page-header {
+    text-align: center;
+    margin-bottom: 50px;
+    }
+
+    .page-header h2 {
+    color: var(--gold);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    font-weight: 300;
+    font-size: 2rem;
+    margin: 0;
+    }
+
+    .reservations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    }
+
+    .reservation-card {
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 25px;
+    backdrop-filter: blur(15px);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    position: relative;
+    overflow: hidden;
+    }
+
+    .reservation-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--gold);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .table-info {
+    display: flex;
+    flex-direction: column;
+    }
+
+    .table-label {
+    color: var(--gold);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    }
+
+    .table-name {
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    }
+
+    .status-badge {
+    background: rgba(74, 222, 128, 0.1);
+    color: #4ade80;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border: 1px solid rgba(74, 222, 128, 0.2);
+    }
+
+    .card-details {
+    margin-bottom: 25px;
+    }
+
+    .detail-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    }
+
+    .detail-label {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.9rem;
+    }
+
+    .detail-value {
+    color: #f1f1f1;
+    font-weight: 500;
+    font-size: 0.95rem;
+    }
+
+    .card-actions {
+    display: flex;
+    gap: 12px;
+    }
+
+    .btn-cancel {
+    flex: 1;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+    text-align: center;
+    transition: 0.3s;
+    cursor: pointer;
+    background: transparent;
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    }
+
+    .btn-cancel:hover {
+    background: #ff6b6b;
+    color: #fff;
+    border-color: #ff6b6b;
+    }
+
+    .page-footer {
+    text-align: center;
+    margin-top: 60px;
+    }
+
+    .btn-new-booking {
+    display: inline-block;
+    padding: 16px 35px;
+    background: var(--gold);
+    color: #000;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: 0.3s;
+    box-shadow: 0 4px 15px rgba(197, 160, 89, 0.2);
+    }
+
+    .btn-new-booking:hover {
+    background: #e5e7eb;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .fade-in-up {
+    animation: fadeInUp 0.7s ease-out forwards;
+    }
+
+    @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+    }
+{% endblock %}
+
+{% block content %}
+    <div class="reservations-page fade-in-up">
+        <div class="search-container">
+            <form action="" method="get" class="search-form">
+                <input type="text" name="search" class="search-input" placeholder="Поиск по номеру стола или дате..."
+                       value="{{ request.GET.search }}">
+                <button type="submit" class="search-button">Найти</button>
+            </form>
+        </div>
+        {% if not reservations %}
+            <div class="page-header">
+                <h2>Бронирований пока нету</h2>
+            </div>
+            <div class="page-footer">
+                <a href="{% url 'table:list' %}" class="btn-new-booking">Забронировать первый столик</a>
+            </div>
+        {% else %}
+            <div class="page-header">
+                <h2>Мои Бронирования</h2>
+            </div>
+
+
+
+            <div class="reservations-grid">
+                {% for reservation in reservations %}
+                    <div class="reservation-card">
+                        <div class="card-header">
+                            <div class="table-info">
+                                <span class="table-label">Ваш столик</span>
+                                <span class="table-name">{{ reservation.table.number }}</span>
+                            </div>
+                            {% now "Y-m-d" as current_day %}
+                            {% now "H" as current_hour %}
+                            {% if current_day < reservation.date|date:"Y-m-d"%}
+                                <div class="status-badge">Активно</div>
+                            {% elif current_day == reservation.date|date:"Y-m-d" and current_hour|add:'0' < reservation.hour_end %}
+
+                                <div
+                                     class="status-badge">Активно
+                                </div>
+
+                            {% else %}
+                                <div style="background: #ff6b6b; color: white; border-color: #ff6b6b"
+                                     class="status-badge">Не активно
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="card-details">
+                            <div class="detail-row">
+                                <span class="detail-label">Дата</span>
+                                <span class="detail-value">{{ reservation.date|date:'d.m.Y' }}</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Время</span>
+                                <span class="detail-value">{{ reservation.hour_start }}:00 - {{ reservation.hour_end }}:00</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Места</span>
+                                <span class="detail-value">{{ reservation.table.seats }}</span>
+                            </div>
+                        </div>
+
+                        <div class="card-actions">
+                            <form action="{% url 'reservation:delete-booked-table' reservation.id %}" method="post"
+                                  style="flex: 1; display: flex;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-cancel" style="width: 100%;">Отменить</button>
+                            </form>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="page-footer">
+                <a href="{% url 'table:list' %}" class="btn-new-booking">Забронировать ещё</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

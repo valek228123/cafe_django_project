@@ -103,7 +103,7 @@
 
     <div class="form-title">Вход</div>
 
-    <form action="{% url 'login' %}" method="post">
+    <form action="{% url 'authentication:login' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <label for="username_1" class="form-label">Имя пользователя</label>

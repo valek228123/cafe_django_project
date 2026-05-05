@@ -110,7 +110,7 @@
 
     <div class="form-title">Регистрация</div>
 
-    <form action="{% url 'register' %}" method="post">
+    <form action="{% url 'authentication:register' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <label for="username_1" class="form-label">Имя пользователя</label>
@@ -143,7 +143,7 @@
     {% endif %}
 
         <div class="buttons">
-            <input type="submit" class="btn btn-primary" value="Войти">
+            <input type="submit" class="btn btn-primary" value="Зарегистрироваться">
         </div>
 
     </form>

@@ -4,7 +4,7 @@ from django.db import models
 
 USER = get_user_model()
 class Reservation(models.Model):
-    tabel = models.ForeignKey("table.Tabel", on_delete=models.CASCADE)
+    table = models.ForeignKey("table.Table", on_delete=models.CASCADE)
     user = models.ForeignKey(USER, on_delete=models.CASCADE)
     date = models.DateField()
     hour_start = models.IntegerField()

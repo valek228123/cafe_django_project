@@ -108,7 +108,7 @@
 {% block content %}
     <div class="booking-container fade-in">
         <h2>Бронирование</h2>
-        <form action="{% url 'book-table' table_id %}" method="post" class="booking-form">
+        <form action="{% url 'reservation:book-table' table_id %}" method="post" class="booking-form">
             {% csrf_token %}
 
             {% if form.non_field_errors %}
@@ -123,7 +123,7 @@
             </div>
             <div class="form-actions">
                 <input type="submit" class="btn-submit" value="Забронировать стол">
-                <a href="{% url 'tabels-list' %}" class="btn-back">Назад</a>
+                <a href="{% url 'table:list' %}" class="btn-back">Назад</a>
             </div>
         </form>
     </div>

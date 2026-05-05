@@ -1,15 +1,26 @@
 from django.db import models
+from django.db.models import ManyToManyField
 
-class Tabel(models.Model):
+class Feature(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+
+
+class Table(models.Model):
     number = models.IntegerField()
     image = models.ImageField(upload_to='table_image/')
     seats = models.IntegerField()
     description = models.TextField()
-    is_free = models.BooleanField(default=True)
+    feature = ManyToManyField("Feature", blank=True)
 
-    class Meta:
-        db_table = 'tabel_tabel'
+    def __str__(self):
+        return str(self.number)
 
 
-# Create your models here.
+
+
+
+
+
 
