@@ -2,6 +2,8 @@ from datetime import datetime
 from re import search
 
 from django.contrib.auth.decorators import login_not_required, login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
 from django.shortcuts import render
 from django.views import generic
 
@@ -20,24 +22,38 @@ class IndexView(generic.TemplateView):
 
 @login_not_required
 def table_view(request):
-    tables = Table.objects.all()
-
-    # tables = tables.filter(description__icontains="Гармония")
+    search = request.GET.get('search',"")
+    seats = request.GET.get('seats')
+    page_number = request.GET.get('page',1)
+    per_page = 12
+    tables = Table.objects.all().prefetch_related('feature')
+    if search:
+        tables = tables.filter(Q(number__icontains=search) | Q(seats__icontains=search))
+    if seats:
+        tables = tables.filter(seats=seats)
     data_now = datetime.now()
     hour = data_now.hour
-    print(hour)
     if 8 <= hour <= 18:
-        all_tables = []
-        for table in tables:
-            is_free = True
-            reservations = Reservation.objects.filter(date=data_now.date(), table_id=table.id)
-            for reservation in reservations:
-                if reservation.hour_start <= hour < reservation.hour_end:
-                    is_free = False
-                    break
-            all_tables.append((table, is_free))
+        # all_tables = []
+        # for table in tables:
+        #     is_free = True
+        #     reservations = Reservation.objects.filter(table_id=table.id,date=data_now)
+        #     for reservation in reservations:
+        #         if reservation.table_id ==  table.id and reservation.hour_start <= hour < reservation.hour_end:
+        #             is_free = False
+        #             break
+        #     all_tables.append((table, is_free))
+        active_reservation = Reservation.objects.filter(date=data_now.date(),hour_start__lte=hour,hour_end__gt=hour).only('table_id')
+        busy_tables_id = set(active_reservation.values_list('table_id', flat=True))
+        paginator = Paginator(tables,per_page)
+        page = paginator.get_page(page_number)
+        is_paginated = page.has_other_pages()
+        all_tables = [(table,table.id not in busy_tables_id) for table in page.object_list]
     else:
-        all_tables = [ (table, False) for table in tables ]
-    return render(request, 'tables/list_tables.html', context={'tables': all_tables})
+        paginator = Paginator(tables, per_page)
+        page = paginator.get_page(page_number)
+        is_paginated = page.has_other_pages()
+        all_tables = [ (table, False) for table in page.object_list ]
+    return render(request, 'tables/list_tables.html', context={'tables': all_tables,"list_of_seats":[ i for i in range(1,11) ],"page":page,"is_paginated":is_paginated})
 
 

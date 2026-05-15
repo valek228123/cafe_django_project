@@ -10,7 +10,7 @@ from django import setup
 
 setup()
 from authentication.models import User
-from table.models import Table
+from table.models import Table,Feature
 from reservation.models import Reservation
 
 fake = Faker()
@@ -48,7 +48,8 @@ def add_reservation(faker: Faker, user: User, table: Table, date, hour_start: in
         hour_end=hour_end,
 
     )
-
+def add_feature(faker: Faker) -> Feature:
+    return Feature.objects.create(name=faker.word())
 
 def generate(faker: Faker):
     # users = []
@@ -56,30 +57,36 @@ def generate(faker: Faker):
     #     users.append(add_user(faker))
     # available_photos = ['1.jpg', '2.jpg', '3.jpg', '4.jpg', '5.jpg']
     # tables = []
-    # for i in range(30):
+    # for i in range(61,10000):
     #     tables.append(add_table(faker, i, available_photos))
-    #     print(".", end="")
+    #     if i % 1000 == 0:
+    #      print(".", end="")
     tables = Table.objects.all()
-    users = User.objects.filter(username = "admin")
-    for user in users:
-        for _ in range(5000):
-            table = random.choice(tables)
-            date = faker.date_this_year(before_today=False, after_today=True)
-            if Reservation.objects.filter(table=table, date = date).exists():
-                continue
-            hour_start = random.randint(8, 17)
-            difference = random.randint(1,18-hour_start)
-            hour_end = hour_start + difference
-            if Reservation.objects.filter(
-                    table=table,
-                    date=date,
-                    hour_start__lt=hour_end,
-                    hour_end__gt=hour_start
-            ).exists():
-                continue
-            add_reservation(faker, user, table, date, hour_start, hour_end)
-            if _ % 50 == 0:
-                print(".", end="")
+    all_features = [ add_feature(faker) for _ in range(10)]
+
+    for table in tables:
+        table.feature.set(list(faker.random_choices(all_features,length=random.randint(1,5))))
+    # users = User.objects.filter(username = "admin")
+    # users = User.objects.all()
+    # for user in users:
+    #     for _ in range(5000):
+    #         table = random.choice(tables)
+    #         date = faker.date_this_year(before_today=False, after_today=True)
+    #         if Reservation.objects.filter(table=table, date = date).exists():
+    #             continue
+    #         hour_start = random.randint(8, 17)
+    #         difference = random.randint(1,18-hour_start)
+    #         hour_end = hour_start + difference
+    #         if Reservation.objects.filter(
+    #                 table=table,
+    #                 date=date,
+    #                 hour_start__lt=hour_end,
+    #                 hour_end__gt=hour_start
+    #         ).exists():
+    #             continue
+    #         add_reservation(faker, user, table, date, hour_start, hour_end)
+
+
 
 #
 def main() -> None:

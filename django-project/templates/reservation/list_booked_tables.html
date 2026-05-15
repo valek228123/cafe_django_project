@@ -219,6 +219,63 @@
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
     }
+    /* Контейнер пагинации */
+/* Контейнер пагинации */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+    width: 100%; /* Занимает всю ширину под сеткой */
+}
+
+.pagination {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap; /* Позволяет кнопкам переноситься на мобильных */
+}
+
+/* Базовый стиль кнопки/ссылки */
+.page-link {
+    background: var(--glass);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #fff;
+    padding: 10px 18px; /* Немного увеличили горизонтальные отступы */
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-weight: 500;
+
+    /* ИСПРАВЛЕНИЕ НАЛОЖЕНИЯ: */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap; /* Запрещает перенос и наложение текста */
+    min-width: 44px;     /* Минимальная ширина для цифр, чтобы они были квадратными */
+    line-height: 1;      /* Центрирует текст по вертикали */
+}
+
+/* Активная страница */
+.page-item.active .page-link {
+    background: var(--gold);
+    color: #000; /* Темный текст на золотом фоне для читаемости */
+    border-color: var(--gold);
+    font-weight: bold;
+    box-shadow: 0 0 20px rgba(184, 146, 87, 0.4);
+}
+
+/* Состояние "Отключено" (для первой/последней) */
+.page-item.disabled {
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.page-item.disabled .page-link {
+    cursor: default;
+}
 {% endblock %}
 
 {% block content %}
@@ -245,7 +302,7 @@
 
 
             <div class="reservations-grid">
-                {% for reservation in reservations %}
+                {% for reservation in page.object_list %}
                     <div class="reservation-card">
                         <div class="card-header">
                             <div class="table-info">
@@ -299,5 +356,10 @@
                 <a href="{% url 'table:list' %}" class="btn-new-booking">Забронировать ещё</a>
             </div>
         {% endif %}
+    {% if is_paginated %}
+        <div>
+        {% include 'paginate.html' with page=page %}
+        </div>
+    {% endif %}
     </div>
 {% endblock %}

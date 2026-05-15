@@ -8,3 +8,4 @@ urlpatterns = [
     path('list_booked_tables/delete/<int:reservation_id>', reservation_views.delete_booked_table_view,
          name='delete-booked-table'),
 ]
+

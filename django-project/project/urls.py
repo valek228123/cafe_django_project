@@ -30,6 +30,8 @@ urlpatterns = [
     path('tables/',include('table.urls')),
     path('reservation/',include('reservation.urls')),
     path("auth/",include('authentication.urls')),
+    path("api/reservations/",include('reservation.api.urls')),
+    path("api/users",include('authentication.api.urls'))
 ] + debug_toolbar_urls()
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
