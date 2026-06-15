@@ -24,6 +24,18 @@ def book_table_view(request, table_id):
                 hour_start=form.cleaned_data['hour_start'],
                 hour_end=form.cleaned_data['hour_end'],
             )
+            session_key = "last_reservation"
+            string_date = form.cleaned_data['date'].strftime("%d.%m.%Y")
+            print(request.session.get(session_key))
+
+            if not request.session.get(session_key):
+                request.session[session_key] = []
+            if len(request.session[session_key]) >= 4:
+                request.session[session_key].pop(0)
+                request.session[session_key].append(string_date)
+            if string_date not in request.session[session_key]:
+                request.session[session_key].append(string_date)
+            request.session.modified = True
             return redirect(resolve_url('/reservation/list_booked_tables'))
 
     return render(request, "reservation/book_table.html", context={"form": form, "table_id": table_id})
@@ -31,8 +43,8 @@ def book_table_view(request, table_id):
 
 @login_required
 def list_booked_tables_view(request):
-    search = request.GET.get('search',"").strip()
-    page_number = request.GET.get('page',1)
+    search = request.GET.get('search', "").strip()
+    page_number = request.GET.get('page', 1)
     per_page = 12
     reservations_qs = Reservation.objects.all()
     if search:
@@ -48,7 +60,8 @@ def list_booked_tables_view(request):
     paginator = Paginator(reservations_qs, per_page)
     page = paginator.get_page(page_number)
     is_paginated = page.has_other_pages()
-    return render(request, 'reservation/list_booked_tables.html', context={'reservations': reservations_qs,"page":page,"is_paginated":is_paginated})
+    return render(request, 'reservation/list_booked_tables.html',
+                  context={'reservations': reservations_qs, "page": page, "is_paginated": is_paginated})
 
 
 @method_decorator(login_required, name='dispatch')
@@ -58,7 +71,7 @@ class TableListView(ListView):
     paginate_by = 12
 
     def get_queryset(self):
-        search = self.request.GET.get('search',"")
+        search = self.request.GET.get('search', "")
         reservations_qs = Reservation.objects.all()
         if search:
             try:

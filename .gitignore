@@ -11,3 +11,4 @@ wheels/
 .idea
 django-project/db.sqlite3
 django-project/media
+django-project/settings.env

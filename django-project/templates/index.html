@@ -87,8 +87,9 @@
             <p>Уникальный дизайн каждого уголка, вдохновленный светом.</p>
         </div>
         <div class="feature-card fade-in">
-            <h3>Комфорт</h3>
-            <p>Простая система бронирования в несколько кликов.</p>
+            <h3>Последние бранирования</h3>
+            <p>{{ request.session.last_reservation }}</p>
+
         </div>
         <div class="feature-card fade-in">
             <h3>Время</h3>

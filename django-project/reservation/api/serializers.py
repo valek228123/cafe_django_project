@@ -27,6 +27,20 @@ class ReservationSerializer(serializers.ModelSerializer):
         fields = ['id','date','created_at','hour_start','hour_end','user','table','table_details']
         read_only_fields = ['id',"user",'created_at']
 
+    def validate(self, attrs):
+        hour_start = attrs['hour_start']
+        hour_end = attrs['hour_end']
+        if hour_start > hour_end:
+            raise serializers.ValidationError('start hour must be before end hour')
+        elif not 8 <= hour_start < 18:
+            raise serializers.ValidationError('start hour must be between 8 and 18')
+        elif not 8 <= hour_end < 18:
+            raise serializers.ValidationError('end hour must be between 8 and 18')
+        return attrs
+
+
+
+
 
 
 

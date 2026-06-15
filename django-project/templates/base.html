@@ -121,6 +121,8 @@
         <li><a href="{% url 'table:list' %}">Столики</a></li>
         {% if user.is_authenticated %}
             <li><a href="{% url 'reservation:list-booked-tables' %}">Мои брони</a></li>
+            <li><a href="{% url 'table:favorites-get' %}">Мои любимые столики</a></li>
+            <li><a href="{% url 'authentication:password_reset_request' %}">Сменить пароль</a></li>
             <li>
             <a>
             <form action="{% url 'authentication:logout' %}" method="post" style="display:inline;">
