@@ -124,20 +124,21 @@
             <li><a href="{% url 'table:favorites-get' %}">Мои любимые столики</a></li>
             <li><a href="{% url 'authentication:password_reset_request' %}">Сменить пароль</a></li>
             <li>
-            <a>
-            <form action="{% url 'authentication:logout' %}" method="post" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit" style="background:none; border:none; color:inherit; cursor:pointer; font:inherit; padding:0;">
-                ВЫЙТИ
-            </button>
+                <a>
+                    <form action="{% url 'authentication:logout' %}" method="post" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit"
+                                style="background:none; border:none; color:inherit; cursor:pointer; font:inherit; padding:0;">
+                            ВЫЙТИ
+                        </button>
 
 
-        </form>
+                    </form>
                 </a>
-                </li>
+            </li>
         {% else %}
             <li><a href="{% url 'authentication:login' %}">Войти</a></li>
-            <li><a href="{% url 'authentication:register' %}" >Зарегестрироваться</a></li>
+            <li><a href="{% url 'authentication:register' %}">Зарегестрироваться</a></li>
         {% endif %}
 
         <li><a href="/admin/">Админ</a></li>

@@ -199,10 +199,7 @@ class ReservationApiViewSetMy(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def list(self, request, *args, **kwargs):
-        print("!!!!!!!!!!!!!!!!!!!!!1",request.query_params)
-        print(bool([param for param in request.query_params if param != "page"]))
-        print([param for param in request.query_params if param != "page"])
-        print([param for param in request.query_params])
+
 
         cache_class = MyNotesCache(request)
         if cache_class.is_cached:

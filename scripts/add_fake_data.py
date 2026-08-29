@@ -66,25 +66,25 @@ def generate(faker: Faker):
 
     for table in tables:
         table.feature.set(list(faker.random_choices(all_features,length=random.randint(1,5))))
-    # users = User.objects.filter(username = "admin")
+    users = User.objects.filter(username = "admin")
     # users = User.objects.all()
-    # for user in users:
-    #     for _ in range(5000):
-    #         table = random.choice(tables)
-    #         date = faker.date_this_year(before_today=False, after_today=True)
-    #         if Reservation.objects.filter(table=table, date = date).exists():
-    #             continue
-    #         hour_start = random.randint(8, 17)
-    #         difference = random.randint(1,18-hour_start)
-    #         hour_end = hour_start + difference
-    #         if Reservation.objects.filter(
-    #                 table=table,
-    #                 date=date,
-    #                 hour_start__lt=hour_end,
-    #                 hour_end__gt=hour_start
-    #         ).exists():
-    #             continue
-    #         add_reservation(faker, user, table, date, hour_start, hour_end)
+    for user in users:
+        for _ in range(5000):
+            table = random.choice(tables)
+            date = faker.date_this_year(before_today=False, after_today=True)
+            if Reservation.objects.filter(table=table, date = date).exists():
+                continue
+            hour_start = random.randint(8, 17)
+            difference = random.randint(1,18-hour_start)
+            hour_end = hour_start + difference
+            if Reservation.objects.filter(
+                    table=table,
+                    date=date,
+                    hour_start__lt=hour_end,
+                    hour_end__gt=hour_start
+            ).exists():
+                continue
+            add_reservation(faker, user, table, date, hour_start, hour_end)
 
 
 

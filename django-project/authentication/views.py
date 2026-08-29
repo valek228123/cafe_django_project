@@ -1,7 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.views import LoginView
 from django.shortcuts import render, redirect, resolve_url
-from django.views import View
 from django.contrib.auth.decorators import login_not_required, login_required
 from authentication.forms import RegisterForm, PasswordResetRequestForm,PasswordResetForm
 from .models import User, PasswordResetToken
